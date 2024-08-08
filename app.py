@@ -4,15 +4,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
-generator = pipeline("text-generation", model="gpt2")
 pipe = pipeline("automatic-speech-recognition", model="openai/whisper-medium")
-
-@app.route("/generate_text")
-def generateTextHandler():
-    example_query = "what is blue?"
-    answer = generator(example_query, max_length=30)
-    print(answer[0]["generated_text"])
-    return jsonify({"status": "Success", "message": "Text Generation Successfull"}), 200
 
 
 @app.route("/transcribe_voice")
