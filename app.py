@@ -19,7 +19,7 @@ def transcribeVoiceHandler():
 @app.route("/upload", methods=['POST'])
 def uploadHandler():
     print(request.json)
-    result = pipe(request.json['img'])
+    result = pipe(request.json['url'])
     print(result['text'])
     return result['text']
     
