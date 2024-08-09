@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
 from transformers import pipeline
 from flask_cors import CORS
+from googletrans import Translator
+
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 import os
@@ -59,6 +61,15 @@ def fetchProductsHandler():
     
     return jsonify(product_list)
     
+    
+@app.route("/translate", methods=['POST'])
+def translateHandler():
+    translator = Translator() 
+    translated_text = translator.translate(request.json['text'], src='auto', dest='en').text
+    print("translated text: ",translated_text)
+    return "success of translation"
+
+
 @app.route("/")
 def testHandler():
     return "ok"
