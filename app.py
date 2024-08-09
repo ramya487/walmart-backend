@@ -73,11 +73,18 @@ def translateHandler():
     print("translated text: ",translated_text)
     
     lstStrings = translated_text.split()
-    format_strings = ','.join(['%s'] * len(lstStrings))
+    
+    # to replace dots with empty string
+    l = []
+    for string in lstStrings:
+        l.append(string.replace(".", ""))
+    print(l)
+        
+    format_strings = ','.join(['%s'] * len(l))
     
     cur = mysql.connection.cursor()
     query = f"SELECT * FROM products WHERE category IN ({format_strings})"
-    cur.execute(query, lstStrings)
+    cur.execute(query, l)
     products = cur.fetchall() # returns tuple of tuples
     
     column_names = [desc[0] for desc in cur.description]
