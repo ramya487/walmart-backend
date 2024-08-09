@@ -55,6 +55,8 @@ def fetchProductsHandler():
     column_names = [desc[0] for desc in cur.description]
     product_list = [dict(zip(column_names, product)) for product in products]
     
+    cur.close()
+    
     return jsonify(product_list)
     
 @app.route("/")
