@@ -28,6 +28,7 @@ app.config["MYSQL_DB"]= db_name
 
 mysql = MySQL(app)
 
+# test handler
 @app.route("/transcribe_voice")
 def transcribeVoiceHandler():
     text = pipe("shirt.mp3")
@@ -44,6 +45,7 @@ def uploadHandler():
     print(result['text'])
     return result['text']
 
+# test handler
 @app.route("/fetch_products", methods=['POST'])
 def fetchProductsHandler():
     lstStrings = request.json['text'].split()
@@ -66,10 +68,24 @@ def fetchProductsHandler():
 def translateHandler():
     translator = Translator() 
     translated_text = translator.translate(request.json['text'], src='auto', dest='en').text
+    
     print("translated text: ",translated_text)
-    return "success of translation"
+    
+    lstStrings = translated_text.split()
+    format_strings = ','.join(['%s'] * len(lstStrings))
+    
+    cur = mysql.connection.cursor()
+    query = f"SELECT * FROM products WHERE category IN ({format_strings})"
+    cur.execute(query, lstStrings)
+    products = cur.fetchall() # returns tuple of tuples
+    
+    column_names = [desc[0] for desc in cur.description]
+    product_list = [dict(zip(column_names, product)) for product in products]
+    
+    cur.close()
+    return jsonify(product_list)
 
-
+# test handler
 @app.route("/")
 def testHandler():
     return "ok"
