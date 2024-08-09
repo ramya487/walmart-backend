@@ -64,6 +64,7 @@ def fetchProductsHandler():
     return jsonify(product_list)
     
     
+# endpoint to translate and fetch products both
 @app.route("/translate", methods=['POST'])
 def translateHandler():
     translator = Translator() 
