@@ -43,7 +43,7 @@ def uploadHandler():
     print(request.json)
     result = pipe(request.json['url'])
     print(result['text'])
-    return result['text']
+    return result['text'], 200
 
 # test handler
 @app.route("/fetch_products", methods=['POST'])
@@ -61,7 +61,7 @@ def fetchProductsHandler():
     
     cur.close()
     
-    return jsonify(product_list)
+    return jsonify(product_list), 200
     
     
 # endpoint to translate and fetch products both
@@ -84,12 +84,12 @@ def translateHandler():
     product_list = [dict(zip(column_names, product)) for product in products]
     
     cur.close()
-    return jsonify(product_list)
+    return jsonify(product_list), 200
 
 # test handler
 @app.route("/")
 def testHandler():
-    return "ok"
+    return "ok", 200
 
 
 if __name__ == "__main__":
