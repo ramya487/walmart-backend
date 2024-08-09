@@ -1,2 +1,5 @@
 env
 shirt.mp3
+.env
+.env*
+*.env
